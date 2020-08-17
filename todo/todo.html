@@ -1,0 +1,89 @@
+<!-- 
+
+    1.  element 잡아오기 
+        var myinput = document.getElementById('')..
+
+    2.  이벤트 리스너로 이벤트 등록
+        myinput.addEventListener("change",function(){
+            data.myinputvalue = myinput.value;
+        })
+
+   3.  데이터 관리하는것
+        var data ={
+           myInputValue : '' //객체 안의 property
+        }
+
+ -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        .todotbl {
+            border: 1px firebrick solid ;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div>
+        <span>to do list</span>
+        
+        <input type="text" id="todoinput">
+        <span id="addbtn"><p>add</p></span>
+        
+        <table class="todotbl">
+            <thead>
+                <tr>
+                    <td>chk</td>
+                    <td>to do</td>
+                </tr>
+            </thead>
+            <tbody id="tbd">
+                <tr>
+                    <td><input type="checkbox"> </td>
+                    <td><p>text</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <span id="delchk"><p>선택삭제</p></span>
+        <span id="delall"><p>전체삭제</p></span>
+
+    </div>
+
+
+    <script>
+
+        var addbtnEl = document.getElementById("addbtn");
+        var todoinputEl = document.getElementById("todoinput");
+        console.log(todoinputEl);
+
+        addbtnEl.addEventListener("click", function(){
+            
+            var newtr = document.createElement("tr");
+            var chktd = document.createElement("td");
+            var newinput = document.createElement("input");
+             newinput.setAttribute("type" , "checkbox");
+            var txttd = document.createElement("td");
+            var newp = document.createElement("p");
+            
+            var newChktd =newtr.appendChild(chktd);
+            newChktd.appendChild(newinput);
+            var newtxttd = newtr.appendChild(txttd);
+            newtxttd.appendChild(newp);
+
+            console.log(newtr);
+        });
+
+        
+
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>toDo</title>
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+  <style>
+    html {
+      background: rgb(39, 35, 39);
+    }
+
+    html,
+    body,
+    input {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #a369af;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .todo {
+      width: 500px;
+      margin: 100px auto;
+      border: 1px solid #eee;
+      padding: 20px 30px 50px;
+      background: #333;
+    }
+
+    .list-box h1 {
+      padding-bottom: 10px;
+      text-align: center;
+      color: #9fd6c2;
+      border-bottom: 1px solid #87898f;
+    }
+
+    .write-box {
+      width: 100%;
+      height: 35px;
+      font-size: 0;
+    }
+
+    .write-box input {
+      width: 400px;
+      font-size: 20px;
+      border: none;
+      background: white;
+      padding: 0 10px;
+      height: 100%;
+    }
+
+    .write-box button {
+      width: 100px;
+      border: none;
+      height: 100%;
+    }
+
+    .table {
+      border-spacing: 0px;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px 20px;
+      font-size: 20px;
+    }
+
+    th {
+      background: #9fd6c2;
+    }
+
+    td {
+      color: #fff;
+    }
+
+    tbody td:first-child {
+      text-align: center;
+    }
+
+    .btn-area {
+      text-align: center;
+    }
+
+    .btn-area button {
+      height: 35px;
+      padding: 0 10px;
+      border: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="todo">
+    <div class="list-box">
+      <h1>To Do List</h1>
+      <div class="write-box">
+        <input type="text" id ="todotext" class="text-basic" />
+        <button type="button" id="btnAdd">추가</button>
+      </div>
+      <table class="table list-table">
+        <colgroup>
+          <col width="10%">
+          <col width="90%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>check</th>
+            <th>To do List</th>
+          </tr>
+        </thead>
+        <tbody id="listBody">
+          <tr>
+            <td>
+              <input type="checkbox" class="btn-chk">
+            </td>
+            <td>청소하기</td>
+          </tr>
+          <tr>
+            <td>
+              <input type="checkbox" class="btn-chk">
+            </td>
+            <td>숙제하기</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-area">
+        <button type="button" id="DeleteSel">선택 완료</button>
+        <button type="button" id="btnDelLast">마지막 항목 완료</button>
+        <button type="button" id="btnDelAll">전체 완료</button>
+      </div>
+    </div>
+    <div class="list-box done-list-box">
+      <table class="table done-list-table">
+        <colgroup>
+          <col width="10%">
+          <col width="90%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>check</th>
+            <th>Done List</th>
+          </tr>
+        </thead>
+        <tbody id="done-listBody">
+          <tr>
+            <td>
+              <input type="checkbox" class="done-btn-chk">
+            </td>
+            <td>공부하기</td>
+          </tr>
+          <tr>
+            <td>
+              <input type="checkbox" class="done-btn-chk">
+            </td>
+            <td>설거지하기</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-area">
+        <button type="button" id="done-DeleteSel">선택 복원</button>
+        <button type="button" id="done-btnDelLast">마지막 항목 복원</button>
+        <button type="button" id="done-btnDelAll">전체 복원</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script src="toDoList.js"></script> -->
+
+  <script>
+     
+     //todo 추가
+      var btnAddEl =document.getElementById('btnAdd');
+
+      btnAddEl.addEventListener('click', function(){
+        addTodo();
+      });
+
+      function addTodo(){
+
+        var todotext =document.getElementById('todotext').value;
+        var textnode = document.createTextNode(todotext);
+        //console.log(textnode);
+        
+        var tr = document.createElement('tr');
+        var td01 = document.createElement('td');
+        var input = document.createElement('input');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('class', 'btn-chk');
+        td01.appendChild(input);
+        
+        var td02 = document.createElement('td');
+        td02.appendChild(textnode);
+
+        tr.appendChild(td01);
+        tr.appendChild(td02);
+      
+
+         var tbody = document.getElementById('listBody');
+         tbody.appendChild(tr);
+         document.getElementById('todotext').value = ''; //input text 초기화
+         
+        // console.log(tbody);
+      }
+
+
+      //선택 완료
+      var DeleteSel = document.getElementById('DeleteSel');
+      var DelList = new Array();
+
+
+      DeleteSel.addEventListener('click', function(){
+ 
+        delTodo();
+
+     });
+
+     //선택 완료
+     function delTodo(){
+        var checkbox = document.querySelectorAll('.btn-chk');
+        //onsole.log(checkbox.length);
+
+        for(var i=0; i<checkbox.length; i++){
+          var item = checkbox.item(i);
+          //console.log(item);
+          var checkResult = item.checked;
+          //console.log(checkResult);
+
+          if(checkResult){
+          var parent = item.parentNode.parentNode;
+          //console.log(parent);
+          parent.parentNode.removeChild(parent);
+          addDoneList(parent);
+          }
+      }
+     }
+
+     //donelist에 추가
+     function addDoneList(item){
+        var doneList = document.getElementById('done-listBody');
+        item.firstChild.firstChild.checked=false;
+        doneList.appendChild(item);
+     }
+
+
+     //전체 완료
+     var delAllBtn = document.getElementById('btnDelAll');
+     var tbody = document.getElementById('listBody');
+     var trList = tbody.children;
+
+     delAllBtn.addEventListener('click', function(){
+     console.log(trList.length);
+     
+     for(var i=0; i<trList.length; i++){
+         var trOne = trList[i];
+         //console.log(trOne);
+         trOne.parentNode.removeChild(trOne);
+         addDoneList(trOne);
+     }
+     })
+
+
+  </script>
+</body>
+
+</html>
